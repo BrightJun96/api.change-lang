@@ -19,7 +19,9 @@ public class MemberService {
     private final MemberResponseMapper memberResponseMapper;
 
 
-
+    /**
+     * 모든 회원 조회
+     */
     public List<MemberResponse> getAllMember() {
         return memberRepository.findAll().stream()
                 .map(memberResponseMapper::toMemberResponse)

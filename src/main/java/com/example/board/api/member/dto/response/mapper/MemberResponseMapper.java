@@ -6,7 +6,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class MemberResponseMapper {
-    public MemberResponse toMemberResponse(MemberEntity memberEntity){
+    public MemberResponse  toMemberResponse(MemberEntity memberEntity){
         return MemberResponse.builder()
                 .id(memberEntity.getId())
                 .email(memberEntity.getEmail())
