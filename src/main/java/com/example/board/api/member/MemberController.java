@@ -1,5 +1,6 @@
 package com.example.board.api.member;
 
+import com.example.board.api.member.dto.response.MemberResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -15,7 +16,12 @@ public class MemberController {
     private final MemberService memberService;
 
     @GetMapping("/all")
-    public List<MemberEntity> getAllMembers() {
+    public List<MemberResponse> getAllMembers() {
         return memberService.getAllMember();
+    }
+
+    @GetMapping("/exception")
+    public String getExceptionMessage() {
+        return  memberService.getExceptionMessage();
     }
 }
