@@ -1,6 +1,6 @@
 package com.example.board.api.country.dto.response.mapper;
 
-import com.example.board.api.country.CountryEntity;
+import com.example.board.persistence.country.CountryEntity;
 import com.example.board.api.country.dto.response.CountryResponse;
 import org.springframework.stereotype.Component;
 

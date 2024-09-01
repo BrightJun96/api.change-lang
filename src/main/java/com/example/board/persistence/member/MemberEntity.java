@@ -1,4 +1,4 @@
-package com.example.board.api.member;
+package com.example.board.persistence.member;
 
 import com.example.board.api.member.enums.Gender;
 import jakarta.persistence.*;

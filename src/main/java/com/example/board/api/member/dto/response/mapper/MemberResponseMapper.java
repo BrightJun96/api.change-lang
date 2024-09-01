@@ -1,6 +1,6 @@
 package com.example.board.api.member.dto.response.mapper;
 
-import com.example.board.api.member.MemberEntity;
+import com.example.board.persistence.member.MemberEntity;
 import com.example.board.api.member.dto.response.MemberResponse;
 import org.springframework.stereotype.Component;
 

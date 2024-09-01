@@ -1,4 +1,4 @@
-package com.example.board.api.country;
+package com.example.board.persistence.country;
 
 
 import jakarta.persistence.*;

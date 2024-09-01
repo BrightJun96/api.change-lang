@@ -4,11 +4,15 @@ package com.example.board.api.member;
 import com.example.board.api.CustomException;
 import com.example.board.api.member.dto.response.MemberResponse;
 import com.example.board.api.member.dto.response.mapper.MemberResponseMapper;
+import com.example.board.persistence.member.MemberEntity;
+import com.example.board.persistence.member.MemberRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -22,10 +26,10 @@ public class MemberService {
     /**
      * 모든 회원 조회
      */
-    public List<MemberResponse> getAllMember() {
-        return memberRepository.findAll().stream()
-                .map(memberResponseMapper::toMemberResponse)
-                .toList();
+    public Page<MemberResponse> getAllMember(int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+
+        return memberRepository.getMemberList(pageable);
     }
 
 
