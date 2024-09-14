@@ -1,7 +1,7 @@
 package com.example.board.api.member;
 
 
-import com.example.board.api.CustomException;
+import com.example.board.common.exception.CustomException;
 import com.example.board.api.member.dto.response.MemberResponse;
 import com.example.board.api.member.dto.response.mapper.MemberResponseMapper;
 import com.example.board.persistence.member.MemberEntity;
@@ -10,16 +10,15 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor
 public class MemberService {
 
     private final MemberRepository memberRepository;
-    private final CustomException customException;
+    private  CustomException customException;
     private final MemberResponseMapper memberResponseMapper;
 
 
@@ -30,6 +29,13 @@ public class MemberService {
         Pageable pageable = PageRequest.of(page, size);
 
         return memberRepository.getMemberList(pageable);
+    }
+
+    /**
+     * 이메일 값으로 회원 조회
+     */
+    public MemberResponse getMemberByEmail(String email) {
+        return memberRepository.findByEmail(email).orElseThrow(() -> new CustomException("회원이 존재하지 않습니다.", HttpStatus.NOT_FOUND));
     }
 
 

@@ -25,6 +25,7 @@ public class AuthController {
     public ResponseEntity<String> login(@RequestBody AuthRequest authRequest) {
         String cookie = authService.login(authRequest);
 
+
         return ResponseEntity.ok()
                 .header(HttpHeaders.SET_COOKIE, cookie)
                 .body("로그인 성공");

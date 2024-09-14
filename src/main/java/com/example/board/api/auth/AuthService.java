@@ -1,48 +1,41 @@
 package com.example.board.api.auth;
 
+import com.example.board.common.exception.CustomException;
 import com.example.board.api.auth.dto.request.AuthRequest;
+import com.example.board.api.member.MemberService;
 import com.example.board.api.member.dto.response.MemberResponse;
 import com.example.board.common.utils.JwtUtil;
-import com.example.board.persistence.member.MemberEntity;
-import com.example.board.persistence.member.MemberRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseCookie;
 import org.springframework.stereotype.Service;
-
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
 public class AuthService {
 
-    private final MemberRepository memberRepository;
+    private final MemberService memberService;
     private final JwtUtil jwtUtil;
 
     public String login(AuthRequest authRequest) {
         // 로그인 로직
-        Optional<MemberResponse> member = memberRepository.findByEmail(authRequest.getEmail());
+      MemberResponse member = memberService.getMemberByEmail(authRequest.getEmail());
 
 
-        if (member.isEmpty()) {
-            return "회원이 존재하지 않습니다.";
-        }
 
-        if (!member.get().getPassword().equals(authRequest.getPassword())) {
 
-            return "비밀번호가 일치하지 않습니다.";
+        if (!member.getPassword().equals(authRequest.getPassword())) {
+           throw new CustomException("비밀번호가 일치하지 않습니다.", HttpStatus.UNAUTHORIZED);
         }
 
 
-        /**
-         * @Todo
-         * 쿠키로 accessToken 발급
-         */
+            // 토큰 생성
+            String AccessToken = jwtUtil.generateToken(member.getEmail());
 
-        String AccessToken = jwtUtil.generateToken(member.get().getEmail());
+            // 쿠키 생성
+            ResponseCookie cookie = jwtUtil.createCookie("access_token", AccessToken,10000);
 
-        ResponseCookie cookie = jwtUtil.createCookie("access_token", AccessToken,10000);
-
-        return cookie.toString();
+            return cookie.toString();
 
     }
 
