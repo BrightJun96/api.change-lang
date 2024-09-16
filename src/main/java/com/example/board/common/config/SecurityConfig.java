@@ -27,11 +27,11 @@ public class SecurityConfig {
                 .csrf(CsrfConfigurer::disable)  // JWT를 사용할 경우 CSRF 보호 비활성화
                 .cors(cors -> cors
                         .configurationSource(corsFilter.corsConfigurationSource())
-                )
-                .authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers("/api/auth/login").permitAll()  // 로그인 API는 누구나 접근 가능
-                        .anyRequest().authenticated()
                 );
+//                .authorizeHttpRequests(authorize -> authorize
+//                        .requestMatchers("/api/auth/login").permitAll()  // 로그인 API는 누구나 접근 가능
+//                        .anyRequest().authenticated()
+//                );
 
         return http.build();
     }
