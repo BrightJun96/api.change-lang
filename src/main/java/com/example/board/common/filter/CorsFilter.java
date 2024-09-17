@@ -1,4 +1,4 @@
-package com.example.board.common.config;
+package com.example.board.common.filter;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

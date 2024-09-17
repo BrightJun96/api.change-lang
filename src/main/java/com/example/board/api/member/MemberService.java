@@ -11,7 +11,11 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
 
 @Service
 @RequiredArgsConstructor
@@ -36,6 +40,15 @@ public class MemberService {
      */
     public MemberResponse getMemberByEmail(String email) {
         return memberRepository.findByEmail(email).orElseThrow(() -> new CustomException("회원이 존재하지 않습니다.", HttpStatus.NOT_FOUND));
+    }
+
+    /**
+     * JWT 토큰에서 사용자 이름을 추출한 후, 이를 기반으로 사용자의 세부 정보를 조회
+     */
+    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+        MemberResponse member = memberRepository.findByEmail(email)
+                .orElseThrow(() -> new UsernameNotFoundException("해당 사용자를 찾을 수 없습니다."));
+        return new org.springframework.security.core.userdetails.User(member.getEmail(), member.getPassword(), new ArrayList<>());
     }
 
 
