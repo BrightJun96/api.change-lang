@@ -43,7 +43,7 @@ public class MemberService {
     }
 
     /**
-     * JWT 토큰에서 사용자 이름을 추출한 후, 이를 기반으로 사용자의 세부 정보를 조회
+     * JWT 토큰에서 사용자 이름을 추출한 후, 이를 기반으로 사용자의 세부 정보를 조회 후 시큐리티 UserDetails 객체를 반환
      */
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         MemberResponse member = memberRepository.findByEmail(email)
