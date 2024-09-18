@@ -27,21 +27,22 @@ public class JwtFilter extends OncePerRequestFilter {
     private final JwtUtil jwtUtil;
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        // 쿠키에서 JWT 토큰을 추출
-        Cookie[] cookies = request.getCookies();
+        // Authorization 헤더에서 JWT 추출
+        String authorizationHeader = request.getHeader("Authorization");
 
-        if(cookies != null){
+        if(authorizationHeader != null && authorizationHeader.startsWith("Bearer ")){
 
-            String accessToken = getCookieValue(cookies, "accessToken");
-            System.out.println("accessToken = " + accessToken);
+            // "Bearer " 부분 제외하고 토큰 추출
+            String accessToken = authorizationHeader.substring(7);
 
-            if(accessToken != null){
-                // JWT에서 사용자 정보 추출
-                String username = jwtUtil.extractUsername(accessToken);
+            // JWT에서 사용자 이메일 추출
+            String email = jwtUtil.extractUsername(accessToken);
 
-                if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
 
-                    UserDetails userDetails = this.memberService.loadUserByUsername(username);
+
+                if (email != null && SecurityContextHolder.getContext().getAuthentication() == null) {
+
+                    UserDetails userDetails = this.memberService.loadUserByUsername(email);
 
                     // JWT 토큰 검증
                     if (jwtUtil.validateToken(accessToken, userDetails.getUsername())) {
@@ -58,7 +59,6 @@ public class JwtFilter extends OncePerRequestFilter {
                     }
                 }
 
-            }
         }
 
 
@@ -66,14 +66,5 @@ public class JwtFilter extends OncePerRequestFilter {
         filterChain.doFilter(request, response);
     }
 
-    /**
-     * Cookie 조회
-     */
-    private String getCookieValue(Cookie[] cookies, String cookieName) {
-        return Arrays.stream(cookies)
-                .filter(cookie -> cookie.getName().equals(cookieName))
-                .map(Cookie::getValue)
-                .findFirst()
-                .orElse(null);
-    }
+
 }

@@ -23,11 +23,11 @@ public class AuthController {
 
     @PostMapping("/login")
     public ResponseEntity<String> login(@RequestBody AuthRequest authRequest) {
-        String cookie = authService.login(authRequest);
+        String accessToken = authService.login(authRequest);
 
 
         return ResponseEntity.ok()
-                .header(HttpHeaders.SET_COOKIE, cookie)
+                .header(HttpHeaders.AUTHORIZATION, "Bearer " + accessToken)
                 .body("로그인 성공");
     }
 }

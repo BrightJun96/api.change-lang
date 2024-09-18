@@ -29,13 +29,12 @@ public class AuthService {
         }
 
 
-            // 토큰 생성
-            String AccessToken = jwtUtil.generateToken(member.getEmail());
 
-            // 쿠키 생성
-            ResponseCookie cookie = jwtUtil.createCookie("access_token", AccessToken,10000);
+//             쿠키 생성
+//            ResponseCookie cookie = jwtUtil.createCookie("access_token", AccessToken,10000);
 
-            return cookie.toString();
+            // JWT 생성 및 반환
+            return jwtUtil.generateToken(member.getEmail());
 
     }
 

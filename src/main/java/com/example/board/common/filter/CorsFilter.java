@@ -19,6 +19,8 @@ public class CorsFilter {
         corsConfiguration.setAllowCredentials(true);
         corsConfiguration.addAllowedOriginPattern("*");
 
+        // authriazation 헤더를 노출시킨다.
+        corsConfiguration.addExposedHeader("Authorization");
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", corsConfiguration);
 
